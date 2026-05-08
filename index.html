@@ -1,34 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Promdaide Medical Billing</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Qasim Shah — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0a0f2e; --blue: #2563eb; --cyan: #06b6d4; --teal: #0d9488; --gold: #f59e0b;
+    --light: #e2e8f0; --muted: #94a3b8; --white: #ffffff;
+    --card-bg: rgba(255,255,255,0.04); --card-border: rgba(99,179,237,0.15);
+    --glow-cyan: rgba(6,182,212,0.25);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Space Grotesk', sans-serif; background: var(--navy); color: var(--light); overflow-x: hidden; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+  .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+  .orb-1 { width: 400px; height: 400px; background: rgba(37,99,235,0.18); top: -100px; right: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(6,182,212,0.12); bottom: 200px; left: -80px; }
+  .orb-3 { width: 200px; height: 200px; background: rgba(245,158,11,0.08); top: 60%; right: 10%; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,15,46,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(99,179,237,0.1); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cyan); }
+
+  section { position: relative; z-index: 1; padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 120px; padding-bottom: 60px; }
+  .hero-inner { display: flex; align-items: center; gap: 60px; }
+  .hero-text { flex: 1; }
+  .hero-photo-wrap { flex-shrink: 0; position: relative; }
+  .hero-photo {
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 3px solid rgba(6,182,212,0.5);
+    box-shadow: 0 0 0 8px rgba(6,182,212,0.08), 0 0 60px rgba(6,182,212,0.2);
+    display: block;
+  }
+  .photo-ring {
+    position: absolute; inset: -14px;
+    border-radius: 50%;
+    border: 1px dashed rgba(6,182,212,0.3);
+    animation: spinRing 20s linear infinite;
+  }
+  .photo-ring::before {
+    content: '';
+    position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+  }
+  @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: var(--cyan); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; width: fit-content; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);} }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(36px, 5vw, 68px); font-weight: 800; line-height: 1.05; color: var(--white); margin-bottom: 12px; letter-spacing: -2px; }
+  .hero h1 .highlight { background: linear-gradient(135deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-roles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+  .role-badge { padding: 5px 16px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid; }
+  .role-badge.dev { background: rgba(37,99,235,0.12); border-color: rgba(37,99,235,0.4); color: #93c5fd; }
+  .role-badge.biller { background: rgba(13,148,136,0.12); border-color: rgba(13,148,136,0.4); color: #5eead4; }
+  .role-badge.it { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.4); color: #c4b5fd; }
+  .hero-desc { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 32px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--blue), var(--cyan)); color: var(--white); padding: 12px 26px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 30px rgba(37,99,235,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(37,99,235,0.5); }
+  .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--light); padding: 12px 26px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s; }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(6,182,212,0.06); }
+  .stats-row { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 48px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; background: linear-gradient(135deg, var(--white), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .stat-label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .section-header { margin-bottom: 44px; }
+  .section-tag { font-size: 12px; font-weight: 600; color: var(--cyan); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .section-tag::after { content: ''; height: 1px; width: 40px; background: var(--cyan); opacity: 0.5; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(26px, 4vw, 40px); font-weight: 800; color: var(--white); letter-spacing: -1px; line-height: 1.1; }
+
+  /* Cards */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .card-3d { position: relative; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 26px; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); transform-style: preserve-3d; overflow: hidden; }
+  .card-3d::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%); border-radius: inherit; pointer-events: none; }
+  .card-3d:hover { transform: translateY(-8px) rotateX(4deg); border-color: rgba(6,182,212,0.4); box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px var(--glow-cyan); }
+  .card-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+  .card-icon.blue { background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.4); }
+  .card-icon.teal { background: rgba(13,148,136,0.2); border: 1px solid rgba(13,148,136,0.4); }
+  .card-icon.gold { background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4); }
+  .card-icon.purple { background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .card-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* Skills */
+  .skills-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .skill-group-title { font-size: 12px; font-weight: 600; color: var(--cyan); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(6,182,212,0.2); }
+  .skill-item { margin-bottom: 14px; }
+  .skill-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .skill-name { font-size: 13px; font-weight: 500; color: var(--light); }
+  .skill-level { font-size: 11px; color: var(--muted); }
+  .skill-bar { height: 4px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
+  .skill-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--cyan)); position: relative; }
+  .skill-fill::after { content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .tech-tag { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 500; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--light); transition: all 0.2s; }
+  .tech-tag:hover { background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.4); color: var(--cyan); transform: translateY(-2px); }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: linear-gradient(180deg, var(--gold), var(--cyan), rgba(6,182,212,0.05)); }
+  .timeline-item { position: relative; margin-bottom: 44px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot { position: absolute; left: -38px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--navy); }
+  .timeline-dot.current { background: var(--gold); box-shadow: 0 0 14px var(--gold); animation: pulseGold 2s infinite; }
+  .timeline-dot.dev { background: #93c5fd; box-shadow: 0 0 10px rgba(147,197,253,0.6); }
+  .timeline-dot.it { background: #c4b5fd; box-shadow: 0 0 10px rgba(196,181,253,0.6); }
+  .timeline-dot.past { background: var(--cyan); box-shadow: 0 0 10px rgba(6,182,212,0.5); }
+  @keyframes pulseGold { 0%,100%{box-shadow:0 0 14px var(--gold);}50%{box-shadow:0 0 24px var(--gold),0 0 6px var(--gold);} }
+
+  .timeline-meta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+  .meta-current { color: var(--gold); }
+  .meta-dev { color: #93c5fd; }
+  .meta-it { color: #c4b5fd; }
+  .meta-past { color: var(--muted); }
+
+  .job-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 3px; }
+  .job-badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 100px; padding: 3px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+  .badge-current { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); color: var(--gold); }
+  .badge-current::before { content:''; width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite; }
+  .badge-dev { background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.3); color: #93c5fd; }
+  .badge-it { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.3); color: #c4b5fd; }
+
+  .timeline-role { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+  .timeline-company { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .timeline-bullets li { font-size: 13px; color: var(--muted); line-height: 1.6; padding-left: 16px; position: relative; }
+  .timeline-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); font-size: 10px; top: 2px; }
+
+  /* Education */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .edu-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 22px; transition: all 0.3s; }
+  .edu-card:hover { border-color: rgba(6,182,212,0.3); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+  .edu-year { font-size: 11px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px; }
+  .edu-degree { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; line-height: 1.3; }
+  .edu-school { font-size: 12px; color: var(--muted); }
+
+  /* Contact */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .contact-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 14px; transition: all 0.3s; text-decoration: none; }
+  .contact-card:hover { border-color: rgba(6,182,212,0.4); background: rgba(6,182,212,0.05); transform: translateY(-3px); }
+  .contact-icon { width: 42px; height: 42px; border-radius: 11px; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .contact-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .contact-value { font-size: 13px; font-weight: 600; color: var(--light); }
+
+  /* Lang */
+  .lang-row { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .lang-name { font-size: 14px; color: var(--light); font-weight: 500; min-width: 60px; }
+  .lang-bar-wrap { flex: 1; height: 5px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
+  .lang-bar { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--teal), var(--cyan)); }
+  .lang-level { font-size: 11px; color: var(--cyan); font-weight: 600; min-width: 50px; text-align: right; }
+
+  footer { position: relative; z-index: 1; text-align: center; padding: 36px; border-top: 1px solid rgba(255,255,255,0.06); color: var(--muted); font-size: 13px; }
+  footer span { color: var(--cyan); }
+
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; } .nav-links { display: none; }
+    section { padding: 60px 20px; }
+    .hero-inner { flex-direction: column-reverse; gap: 32px; }
+    .hero-photo { width: 160px; height: 160px; }
+    .skills-container, .edu-grid, .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="container header-flex">
-      <div class="logo">Promdaide</div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html" class="contact-btn">Contact</a>
-      </nav>
-    </div>
-  </header>
-  <main>
-    <section class="hero">
-      <div class="container">
-        <h1>Streamline Your Practice<br>with <span class="primary">Promdaide Medical Billing</span></h1>
-        <p>Expert solutions for healthcare providers & medical offices. Focus on care, let us handle your billing complexities.</p>
-        <a href="contact.html" class="cta-btn">Get Started</a>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<nav>
+  <div class="nav-logo">M<span>Q</span>S</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Available for hire</div>
+      <h1>Muhammad<br><span class="highlight">Qasim Shah</span></h1>
+      <div class="hero-roles">
+        <span class="role-badge dev">⟨/⟩ Frontend Developer</span>
+        <span class="role-badge biller">♥ Lead RCM Specialist</span>
+        <span class="role-badge it">⚙ IT Professional</span>
       </div>
-    </section>
-  </main>
-  <footer>
-    <div class="container">&copy; 2025 Promdaide. All rights reserved.</div>
-  </footer>
+      <p class="hero-desc">Multi-domain professional combining frontend web development, expert revenue cycle management, and IT operations. Precision and excellence across every domain.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">Get in Touch →</a>
+        <a href="#experience" class="btn-outline">View Experience</a>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Years Experience</span></div>
+        <div class="stat"><span class="stat-num">4</span><span class="stat-label">Companies</span></div>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Domains</span></div>
+        <div class="stat"><span class="stat-num">C1</span><span class="stat-label">English Level</span></div>
+      </div>
+    </div>
+
+    <!-- PHOTO -->
+    <div class="hero-photo-wrap">
+      <div class="photo-ring"></div>
+      <img
+        class="hero-photo"
+        src="/mnt/user-data/uploads/97909142.png"
+        alt="Muhammad Qasim Shah"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      <div style="display:none; width:220px; height:220px; border-radius:50%; background:rgba(6,182,212,0.12); border:3px solid rgba(6,182,212,0.4); align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:var(--cyan);">MQS</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I DO -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-tag">What I Do</div>
+    <h2 class="section-title">Three Skills,<br>One Professional</h2>
+  </div>
+  <div class="cards-grid">
+    <div class="card-3d">
+      <div class="card-icon blue">⟨/⟩</div>
+      <div class="card-title">Frontend Development</div>
+      <p class="card-text">Building responsive, modern websites with clean HTML, CSS, and JavaScript. Pixel-perfect UIs across all devices.</p>
+    </div>
+    <div class="card-3d">
+      <div class="card-icon teal">♥</div>
+      <div class="card-title">Revenue Cycle Management</div>
+      <p class="card-text">Leading end-to-end RCM — charge capture to payment posting — maximizing revenue and minimizing claim denials.</p>
+    </div>
+    <div class="card-3d">
+      <div class="card-icon gold">$</div>
+      <div class="card-title">Accounts Receivable</div>
+      <p class="card-text">Managing full AR cycles: payment posting, collection calls, denial management, and revenue optimization.</p>
+    </div>
+    <div class="card-3d">
+      <div class="card-icon purple">⚙</div>
+      <div class="card-title">IT Operations</div>
+      <p class="card-text">Providing IT support, system administration, and technical solutions in a professional banking environment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-tag">Expertise</div>
+    <h2 class="section-title">Skills & Tools</h2>
+  </div>
+  <div class="skills-container">
+    <div>
+      <div class="skill-group-title">Medical Billing & RCM</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">ICD-10 / CPT / HCPCS Coding</span><span class="skill-level">Expert</span></div><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Medicare & Medicaid</span><span class="skill-level">Expert</span></div><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Revenue Cycle Management</span><span class="skill-level">Lead</span></div><div class="skill-bar"><div class="skill-fill" style="width:93%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Advanced MD</span><span class="skill-level">Expert</span></div><div class="skill-bar"><div class="skill-fill" style="width:96%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Simple Practice</span><span class="skill-level">Proficient</span></div><div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div></div>
+    </div>
+    <div>
+      <div class="skill-group-title">Development & IT</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">HTML / CSS</span><span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">JavaScript</span><span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">MS Office Suite</span><span class="skill-level">Expert</span></div><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">IT Support & Systems</span><span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Data Analysis</span><span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div></div>
+    </div>
+  </div>
+  <div class="tech-tags" style="margin-top:28px">
+    <span class="tech-tag">Payment Posting</span>
+    <span class="tech-tag">Patient Account Analysis</span>
+    <span class="tech-tag">Medical Claims Submission</span>
+    <span class="tech-tag">Collection Calls</span>
+    <span class="tech-tag">Denial Management</span>
+    <span class="tech-tag">HTML5</span>
+    <span class="tech-tag">CSS3</span>
+    <span class="tech-tag">JavaScript</span>
+    <span class="tech-tag">Website Development</span>
+    <span class="tech-tag">IT Infrastructure</span>
+    <span class="tech-tag">Staff Management</span>
+    <span class="tech-tag">AI & ML Fundamentals</span>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <div class="section-tag">Career</div>
+    <h2 class="section-title">Work History</h2>
+  </div>
+  <div class="timeline">
+
+    <!-- 1. ProMDaide - Current -->
+    <div class="timeline-item">
+      <div class="timeline-dot current"></div>
+      <div class="timeline-meta meta-current">Nov 2025 — Present</div>
+      <div class="job-header">
+        <div class="timeline-role">Lead & RCM Specialist</div>
+        <span class="job-badge badge-current">Current Role</span>
+      </div>
+      <div class="timeline-company">ProMDaide</div>
+      <ul class="timeline-bullets">
+        <li>Leading revenue cycle management operations as senior specialist and team lead</li>
+        <li>Overseeing end-to-end RCM workflows including charge entry, claims submission, and payment reconciliation</li>
+        <li>Managing and mentoring billing team members to ensure accuracy and compliance</li>
+        <li>Driving denial reduction strategies and optimizing cash flow for multiple providers</li>
+        <li>Reporting on key RCM performance metrics and implementing process improvements</li>
+      </ul>
+    </div>
+
+    <!-- 2. PRG Pakistan -->
+    <div class="timeline-item">
+      <div class="timeline-dot past"></div>
+      <div class="timeline-meta meta-past">Feb 2023 — Nov 2025</div>
+      <div class="timeline-role">Medical Billing Executive</div>
+      <div class="timeline-company">PRG Pakistan, Rawalpindi</div>
+      <ul class="timeline-bullets">
+        <li>Assisted patients in understanding benefits coverage and financial responsibilities</li>
+        <li>Reduced claim denials via accurate ICD-10, CPT, and HCPCS coding</li>
+        <li>Increased cash flow with timely submission of clean claims to insurers and government agencies</li>
+        <li>Trained new staff on billing processes, building a knowledgeable high-performing team</li>
+        <li>Managed high-volume billing tasks across multiple providers simultaneously</li>
+      </ul>
+    </div>
+
+    <!-- 3. UPAP Microfinance Bank -->
+    <div class="timeline-item">
+      <div class="timeline-dot it"></div>
+      <div class="timeline-meta meta-it">2023 — Present</div>
+      <div class="job-header">
+        <div class="timeline-role">IT Officer</div>
+        <span class="job-badge badge-it">IT</span>
+      </div>
+      <div class="timeline-company">UPAP Microfinance Bank</div>
+      <ul class="timeline-bullets">
+        <li>Providing IT support and technical assistance across banking operations</li>
+        <li>Managing hardware, software, and network infrastructure to ensure system uptime</li>
+        <li>Troubleshooting technical issues and coordinating with vendors for resolution</li>
+        <li>Supporting digital banking systems and internal technology workflows</li>
+      </ul>
+    </div>
+
+    <!-- 4. Swiss Max -->
+    <div class="timeline-item">
+      <div class="timeline-dot dev"></div>
+      <div class="timeline-meta meta-dev">2022 — Sep 2023</div>
+      <div class="job-header">
+        <div class="timeline-role">Senior Website Developer</div>
+        <span class="job-badge badge-dev">Dev</span>
+      </div>
+      <div class="timeline-company">Swiss Max</div>
+      <ul class="timeline-bullets">
+        <li>Developed and maintained high-quality, responsive websites for clients</li>
+        <li>Led frontend development projects from design mockup to production deployment</li>
+        <li>Collaborated with design and backend teams to deliver pixel-perfect UI experiences</li>
+        <li>Mentored junior developers and enforced coding best practices and standards</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <div class="section-tag">Academic Background</div>
+    <h2 class="section-title">Education</h2>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-year">2021 — BS Graduate</div>
+      <div class="edu-degree">Bachelor of Science: Computer Science</div>
+      <div class="edu-school">Abdul Wali Khan University, Mardan</div>
+      <div style="margin-top:12px; font-size:12px; color:var(--muted); line-height:1.6">Data Structures · Algorithms · OS · Databases · Software Engineering · AI · Computer Networks</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">2016 — FSc</div>
+      <div class="edu-degree">FSc: Engineering (Pre-Engineering)</div>
+      <div class="edu-school">Government Secondary School & College, Khair Abad</div>
+      <div style="margin-top:12px; font-size:12px; color:var(--muted); line-height:1.6">Strong analytical foundation with applied problem-solving skills</div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section>
+  <div class="section-header">
+    <div class="section-tag">Languages</div>
+    <h2 class="section-title">Communication</h2>
+  </div>
+  <div style="max-width:460px">
+    <div class="lang-row"><span class="lang-name">English</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div><span class="lang-level">C1 Advanced</span></div>
+    <div class="lang-row"><span class="lang-name">Urdu</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div><span class="lang-level">C1 Native</span></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-title">Let's Work Together</h2>
+  </div>
+  <div class="contact-grid">
+    <a href="tel:03139088892" class="contact-card">
+      <div class="contact-icon">📞</div>
+      <div><div class="contact-label">Phone</div><div class="contact-value">03139088892</div></div>
+    </a>
+    <a href="mailto:mqasimshah221@gmail.com" class="contact-card">
+      <div class="contact-icon">✉️</div>
+      <div><div class="contact-label">Email</div><div class="contact-value">mqasimshah221@gmail.com</div></div>
+    </a>
+    <div class="contact-card" style="cursor:default">
+      <div class="contact-icon">📍</div>
+      <div><div class="contact-label">Location</div><div class="contact-value">Rawalpindi, Pakistan</div></div>
+    </div>
+    <div class="contact-card" style="cursor:default">
+      <div class="contact-icon">🏢</div>
+      <div><div class="contact-label">Current Company</div><div class="contact-value">ProMDaide</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Crafted for <span>Muhammad Qasim Shah</span> — Developer · RCM Specialist · IT Professional
+</footer>
+
 </body>
 </html>
